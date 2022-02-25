@@ -6,6 +6,7 @@ import com.example.tweets.tweets.model.accounts;
 import com.example.tweets.tweets.repository.AccountsRepository;
 import com.example.tweets.tweets.service.IAccountsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,4 +22,9 @@ public class AccountsService implements IAccountsService {
 
         return accounts;
     }
+
+    public String findPasswordByUsername(String username) {
+        return accountsRepository.findPasswordByUsername(username);
+    }
+
 }

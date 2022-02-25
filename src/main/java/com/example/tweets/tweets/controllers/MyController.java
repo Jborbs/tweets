@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,28 +53,37 @@ class MyController {
         return model;
     }
 
-    /*@RequestMapping("/login")
+    @RequestMapping("/loginPage")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ModelAndView loginHome(ModelAndView model) {
+        model.setViewName("loginPage");
+        return model;
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(value = HttpStatus.OK)
     public ModelAndView login(HttpServletRequest request,
-                              HttpServletResponse response) {
-        String userName=request.getParameter("userName");
+                              HttpServletResponse response, ModelAndView modelAndView) {
+        String userName=request.getParameter("username");
         String password=request.getParameter("password");
         String message;
 
-        //ToDo Change to query from db
-        if(userName != null &&
-                !userName.equals("")
-                && userName.equals("jai") &&
-                password != null &&
-                !password.equals("") &&
-                password.equals("123")){
-            message = "Welcome " +userName + ".";
-            return new ModelAndView("welcome",
-                    "message", message);
+        String actualPassword = accountsService.findPasswordByUsername(userName);
+
+        if(password.equals(actualPassword)){
+            message = "Welcome " + userName + ".";
+            modelAndView.addObject("message", message);
+            modelAndView.addObject("User", userName);
+            modelAndView.setViewName("userpage");
+            return modelAndView;
 
         }else{
             message = "Wrong username or password.";
-            return new ModelAndView("errorPage",
+             new ModelAndView("errorPage",
                     "message", message);
+            modelAndView.addObject("message", message);
+            modelAndView.setViewName("error");
+            return modelAndView;
         }
-    }*/
+    }
 }
