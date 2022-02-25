@@ -1,5 +1,6 @@
 package com.example.tweets.tweets.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.example.tweets.tweets.model.accounts;
@@ -23,8 +24,9 @@ public class AccountsService implements IAccountsService {
         return accounts;
     }
 
-    public String findPasswordByUsername(String username) {
-        return accountsRepository.findPasswordByUsername(username);
+    public List<String> findPasswordSaltByUsername(String username) {
+        List<String> passwordSalt = Arrays.asList(accountsRepository.findPasswordSaltByUsername(username).split(","));
+        return passwordSalt;
     }
 
 }

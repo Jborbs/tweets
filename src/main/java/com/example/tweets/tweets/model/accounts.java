@@ -14,8 +14,9 @@ public class accounts {
     @Id
     private Integer user_id;
     private String username;
-    private String password;
     private String email;
     private Date created_on;
     private Date last_login;
+    private String salt;
+    private String password;
 }

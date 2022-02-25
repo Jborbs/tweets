@@ -3,12 +3,11 @@ package com.example.tweets.tweets.controllers;
 import com.example.tweets.tweets.model.accounts;
 import com.example.tweets.tweets.model.tweets;
 import com.example.tweets.tweets.service.IAccountsService;
+import com.example.tweets.tweets.service.IEncryptionService;
 import com.example.tweets.tweets.service.ITweetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,19 +20,17 @@ import java.util.List;
 @Controller
 class MyController {
 
+
+
     @Autowired
     private IAccountsService accountsService;
 
     @Autowired
     private ITweetsService tweetsService;
 
-    @RequestMapping(value = "/")
-    @ResponseStatus(value = HttpStatus.OK)
-    public String hello(Model model) {
-        String response = "hello";
-        model.addAttribute("helloName", response);
-        return "home";
-    }
+    @Autowired
+    private IEncryptionService encryptionService;
+
 
     @RequestMapping(value = "/accounts")
     @ResponseStatus(value = HttpStatus.OK)
@@ -53,7 +50,7 @@ class MyController {
         return model;
     }
 
-    @RequestMapping("/loginPage")
+    @RequestMapping("/home")
     @ResponseStatus(value = HttpStatus.OK)
     public ModelAndView loginHome(ModelAndView model) {
         model.setViewName("loginPage");
@@ -68,14 +65,15 @@ class MyController {
         String password=request.getParameter("password");
         String message;
 
-        String actualPassword = accountsService.findPasswordByUsername(userName);
+        List<String> userPwdSalt = accountsService.findPasswordSaltByUsername(userName);
+        String expectedPassword = userPwdSalt.get(0);
+        String expectedSalt = userPwdSalt.get(1);
 
-        if(password.equals(actualPassword)){
+        if(encryptionService.verifyUserPassword(password, expectedPassword, expectedSalt)){
             message = "Welcome " + userName + ".";
             modelAndView.addObject("message", message);
             modelAndView.addObject("User", userName);
             modelAndView.setViewName("userpage");
-            return modelAndView;
 
         }else{
             message = "Wrong username or password.";
@@ -83,7 +81,14 @@ class MyController {
                     "message", message);
             modelAndView.addObject("message", message);
             modelAndView.setViewName("error");
-            return modelAndView;
         }
+        return modelAndView;
     }
+/*
+    @RequestMapping("/userpage/{userId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ModelAndView loginHome(@PathVariable("userID") String userID, Model model) {
+        model.setViewName("loginPage");
+        return model;
+    }*/
 }

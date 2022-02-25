@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IAccountsService {
     List<accounts> findAll();
-    String findPasswordByUsername(String username);
+    List<String> findPasswordSaltByUsername(String username);
 }
