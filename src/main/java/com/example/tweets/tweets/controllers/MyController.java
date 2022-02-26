@@ -64,35 +64,29 @@ class MyController {
                               HttpServletResponse response, ModelAndView modelAndView) {
         String userName=request.getParameter("username");
         String password=request.getParameter("password");
-        String message;
 
         List<String> userPwdSalt = accountsService.findPasswordSaltByUsername(userName);
         String expectedPassword = userPwdSalt.get(0);
         String expectedSalt = userPwdSalt.get(1);
 
         if(encryptionService.verifyUserPassword(password, expectedPassword, expectedSalt)){
-            message = "Welcome " + userName + ".";
-            modelAndView.addObject("message", message);
             modelAndView.addObject("username", userName);
             List<tweets> listTweets = tweetsService.findAll();
             modelAndView.addObject("listTweets", listTweets);
             modelAndView.setViewName("userpage");
 
-        }else{
-            message = "Wrong username or password.";
-             new ModelAndView("errorPage",
-                    "message", message);
-            modelAndView.addObject("message", message);
-            modelAndView.setViewName("error");
         }
+        else
+            modelAndView.setViewName("loginPage");
         return modelAndView;
     }
 
 
-    @RequestMapping("/userpage")
+    @RequestMapping("/userpage/{username}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ModelAndView loginHome( ModelAndView model, HttpServletRequest request) {
+    public ModelAndView loginHome( @PathVariable("username") String userId, ModelAndView model, HttpServletRequest request) {
        // System.out.println(userID);
+        model.addObject("username", userId);
         List<tweets> listTweets = tweetsService.findAll();
         model.addObject("listTweets", listTweets);
         model.setViewName("userpage");
@@ -110,27 +104,30 @@ class MyController {
         tempTweet.setDateposted(DateUtils.createToday().getTime());
 
         String userid = request.getParameter("id");
-
         //TODO need to pull user id by username
-        tempTweet.setUserID(1);
+        tempTweet.setUserID(accountsService.findByUsername(userid).getUser_id());
 
         tweetsService.addTweet(tempTweet);
+        List<tweets> listTweets = tweetsService.findAll();
+        modelAndView.addObject("listTweets", listTweets);
+        modelAndView.addObject("username", userid);
         modelAndView.setViewName("userpage");
         return modelAndView;
     }
-    @RequestMapping("/myTweets")
+    @RequestMapping("/myTweets/{username}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ModelAndView myTweets( ModelAndView model, HttpServletRequest request) {
-        // System.out.println(userID);
-        List<tweets> listTweets = tweetsService.findByUserID(1);
+    public ModelAndView myTweets(@PathVariable("username") String userId, ModelAndView model, HttpServletRequest request) {
+        model.addObject("username", userId);
+        List<tweets> listTweets = tweetsService.findByUserID(accountsService.findByUsername(userId).getUser_id());
         model.addObject("listMyTweets", listTweets);
         model.setViewName("MyTweets");
         return model;
     }
 
-    @RequestMapping("/createTweet")
+    @RequestMapping("/createTweet/{username}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ModelAndView createTweet( ModelAndView model, HttpServletRequest request) {
+    public ModelAndView createTweet(@PathVariable("username") String userId, ModelAndView model, HttpServletRequest request) {
+        model.addObject("username", userId);
         model.setViewName("CreateTweet");
         return model;
     }

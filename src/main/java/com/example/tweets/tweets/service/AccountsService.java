@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.tweets.tweets.model.accounts;
+import com.example.tweets.tweets.model.tweets;
 import com.example.tweets.tweets.repository.AccountsRepository;
 import com.example.tweets.tweets.service.IAccountsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class AccountsService implements IAccountsService {
     public List<String> findPasswordSaltByUsername(String username) {
         List<String> passwordSalt = Arrays.asList(accountsRepository.findPasswordSaltByUsername(username).split(","));
         return passwordSalt;
+    }
+
+    public accounts findByUsername(String username){
+        accounts account =  accountsRepository.findByUsername(username);
+
+        return account;
     }
 
 }

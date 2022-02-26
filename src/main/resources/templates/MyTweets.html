@@ -7,15 +7,15 @@
 
 </head>
 <body>
-<a href="userpage">All Tweets</a>
-<a href="myTweets">My Tweets</a>
-<a href="createTweet">Post a Tweet</a>
+<a th:href="@{'/userpage/' + ${username}}">All Tweets</a>
+<a th:href="@{'/myTweets/' + ${username}}">My Tweets</a>
+<a th:href="@{'/createTweet/' + ${username}}">Post a Tweet</a>
 <a href="/">Logout</a>
 
 <table>
     <tr>
         <th></th>
-        <th>Tweet</th>
+        <th>My Tweets</th>
     </tr>
 
     <tr th:each="tweet : ${listMyTweets}">
