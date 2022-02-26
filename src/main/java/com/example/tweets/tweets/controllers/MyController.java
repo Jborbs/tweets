@@ -109,6 +109,8 @@ class MyController {
         tempTweet.setTweetdata(tweetMessage);
         tempTweet.setDateposted(DateUtils.createToday().getTime());
 
+        String userid = request.getParameter("id");
+
         //TODO need to pull user id by username
         tempTweet.setUserID(1);
 
@@ -120,8 +122,8 @@ class MyController {
     @ResponseStatus(value = HttpStatus.OK)
     public ModelAndView myTweets( ModelAndView model, HttpServletRequest request) {
         // System.out.println(userID);
-        List<tweets> listTweets = tweetsService.findAll();
-        model.addObject("listTweets", listTweets);
+        List<tweets> listTweets = tweetsService.findByUserID(1);
+        model.addObject("listMyTweets", listTweets);
         model.setViewName("MyTweets");
         return model;
     }

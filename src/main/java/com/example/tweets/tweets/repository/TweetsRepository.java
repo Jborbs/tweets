@@ -7,8 +7,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface TweetsRepository extends JpaRepository<tweets, Integer> {
+
+    List<tweets> findByUserID(int userID);
 
 }

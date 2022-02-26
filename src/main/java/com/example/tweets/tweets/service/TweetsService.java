@@ -24,6 +24,13 @@ public class TweetsService implements ITweetsService {
         return tweets;
     }
 
+    @Override
+    public List<tweets> findByUserID(int userID){
+        List<tweets> tweets =  tweetsRepository.findByUserID(userID);
+
+        return tweets;
+    }
+
     public void addTweet(tweets tweet) {
         tweetsRepository.save(tweet);
     }
