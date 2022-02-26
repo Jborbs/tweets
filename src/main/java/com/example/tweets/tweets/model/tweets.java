@@ -3,9 +3,7 @@ package com.example.tweets.tweets.model;
 import lombok.Data;
 
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -13,6 +11,8 @@ import javax.persistence.Table;
 public class tweets {
 
     @Id
+    @SequenceGenerator(name="seq-gen",sequenceName="MY_SEQ_GEN", initialValue=1, allocationSize=12)
+    @GeneratedValue(strategy= GenerationType.IDENTITY, generator="seq-gen")
     private Integer tweetID;
     private Integer userID;
     private String tweetdata;

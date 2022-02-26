@@ -1,23 +1,24 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Tweets</title>
-
+    <title>Create a Tweet</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<table>
-    <tr>
-        <th>User</th>
-        <th>Tweet</th>
-    </tr>
+<a href="userpage">All Tweets</a>
+<a href="myTweets">My Tweets</a>
+<a href="createTweet">Post a Tweet</a>
+<a href="/">Logout</a>
 
-    <tr th:each="tweet : ${listTweets}">
-        <td th:text="${tweet.userid}">User</td>
-        <td th:text="${tweet.tweetdata}">Tweet</td>
-    </tr>
-</table>
+<form action="/addTweet" method="Post">
+    <p></p>
+    <input type="text" name="tweetMessage" maxlength="160" placeholder="What do you want to say to the world?" required/> <br/>
+    <input id="id" name="id" type="hidden" value="${userID}"/>
+    <button type="submit">Submit</button>
+</form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

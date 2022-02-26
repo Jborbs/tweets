@@ -3,18 +3,22 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Tweets</title>
+    <title>My Tweets</title>
 
 </head>
 <body>
+<a href="userpage">All Tweets</a>
+<a href="myTweets">My Tweets</a>
+<a href="createTweet">Post a Tweet</a>
+<a href="/">Logout</a>
+
 <table>
     <tr>
-        <th>User</th>
+        <th></th>
         <th>Tweet</th>
     </tr>
 
-    <tr th:each="tweet : ${listTweets}">
-        <td th:text="${tweet.userid}">User</td>
+    <tr th:each="tweet : ${listMyTweets}">
         <td th:text="${tweet.tweetdata}">Tweet</td>
     </tr>
 </table>
