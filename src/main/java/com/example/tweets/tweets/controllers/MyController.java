@@ -71,7 +71,10 @@ class MyController {
 
         if(encryptionService.verifyUserPassword(password, expectedPassword, expectedSalt)){
             modelAndView.addObject("username", userName);
-            List<tweets> listTweets = tweetsService.findAll();
+           // List<tweets> listTweets = tweetsService.findAll();
+
+            Integer userid = accountsService.findByUsername(userName).getUser_id();
+            List<tweets> listTweets = tweetsService.findByUseridNotLike(userid);
             modelAndView.addObject("listTweets", listTweets);
             modelAndView.setViewName("userpage");
 
@@ -87,7 +90,8 @@ class MyController {
     public ModelAndView loginHome( @PathVariable("username") String userId, ModelAndView model, HttpServletRequest request) {
        // System.out.println(userID);
         model.addObject("username", userId);
-        List<tweets> listTweets = tweetsService.findAll();
+        Integer userid = accountsService.findByUsername(userId).getUser_id();
+        List<tweets> listTweets = tweetsService.findByUseridNotLike(userid);
         model.addObject("listTweets", listTweets);
         model.setViewName("userpage");
         return model;
@@ -105,10 +109,11 @@ class MyController {
 
         String userid = request.getParameter("id");
         //TODO need to pull user id by username
-        tempTweet.setUserID(accountsService.findByUsername(userid).getUser_id());
+        tempTweet.setUserid(accountsService.findByUsername(userid).getUser_id());
 
         tweetsService.addTweet(tempTweet);
-        List<tweets> listTweets = tweetsService.findAll();
+        Integer userId = accountsService.findByUsername(userid).getUser_id();
+        List<tweets> listTweets = tweetsService.findByUseridNotLike(userId);
         modelAndView.addObject("listTweets", listTweets);
         modelAndView.addObject("username", userid);
         modelAndView.setViewName("userpage");
@@ -118,7 +123,7 @@ class MyController {
     @ResponseStatus(value = HttpStatus.OK)
     public ModelAndView myTweets(@PathVariable("username") String userId, ModelAndView model, HttpServletRequest request) {
         model.addObject("username", userId);
-        List<tweets> listTweets = tweetsService.findByUserID(accountsService.findByUsername(userId).getUser_id());
+        List<tweets> listTweets = tweetsService.findByUserid(accountsService.findByUsername(userId).getUser_id());
         model.addObject("listMyTweets", listTweets);
         model.setViewName("MyTweets");
         return model;

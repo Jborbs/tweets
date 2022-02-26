@@ -24,9 +24,15 @@ public class TweetsService implements ITweetsService {
         return tweets;
     }
 
+    public List<tweets> findByUseridNotLike(int userID){
+        List<tweets> tweets =  tweetsRepository.findByUseridNotLike(userID);
+
+        return tweets;
+    }
+
     @Override
-    public List<tweets> findByUserID(int userID){
-        List<tweets> tweets =  tweetsRepository.findByUserID(userID);
+    public List<tweets> findByUserid(int userID){
+        List<tweets> tweets =  tweetsRepository.findByUserid(userID);
 
         return tweets;
     }

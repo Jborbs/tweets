@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface TweetsRepository extends JpaRepository<tweets, Integer> {
 
-    List<tweets> findByUserID(int userID);
+    List<tweets> findByUserid(int userID);
 
+    @Query("SELECT t FROM tweets t where t.userid <> ?1")
+    List<tweets> findByUseridNotLike(int userID);
 }

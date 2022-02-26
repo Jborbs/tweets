@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ITweetsService {
     List<tweets> findAll();
-    List<tweets> findByUserID(int userid);
+    List<tweets> findByUserid(int userid);
     void addTweet(tweets tweet);
+    List<tweets> findByUseridNotLike(int userID);
 }

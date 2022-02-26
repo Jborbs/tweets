@@ -14,7 +14,8 @@ public class tweets {
     @SequenceGenerator(name="seq-gen",sequenceName="MY_SEQ_GEN", initialValue=1, allocationSize=12)
     @GeneratedValue(strategy= GenerationType.IDENTITY, generator="seq-gen")
     private Integer tweetID;
-    private Integer userID;
+    @JoinColumn(name="userid")
+    private Integer userid;
     private String tweetdata;
     private Date dateposted;
 }
